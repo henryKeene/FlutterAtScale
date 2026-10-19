@@ -1,0 +1,13 @@
+{
+  "@@locale": "es",
+  "title": "Estadísticas de lectura",
+  "emptyTitle": "Aún no hay nada que contar",
+  "emptyMessage": "Añade algunos libros a tu estantería para ver tus estadísticas.",
+  "findABook": "Buscar un libro",
+  "goalTitle": "Objetivo de lectura de {year}",
+  "goalProgress": "{read} de {goal, plural, =1{1 libro} other{{goal} libros}}",
+  "booksToGo": "{count, plural, =1{Te queda 1 libro} other{Te quedan {count} libros}}",
+  "goalReached": "Objetivo cumplido. ¡Buen trabajo!",
+  "averageRating": "Nota media",
+  "finishedByMonth": "Terminados por mes"
+}

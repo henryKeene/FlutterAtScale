@@ -1,0 +1,11 @@
+{
+  "@@locale": "en",
+  "somethingWentWrong": "Something went wrong",
+  "@somethingWentWrong": {
+    "description": "Title of the error view shown when something fails to load."
+  },
+  "tryAgain": "Try again",
+  "@tryAgain": {
+    "description": "Button on the error view that retries the failed action."
+  }
+}

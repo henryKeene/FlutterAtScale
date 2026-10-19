@@ -1,0 +1,10 @@
+{
+  "@@locale": "es",
+  "title": "Mis libros",
+  "emptyShelfTitle": "Tu estantería está vacía",
+  "emptyShelfMessage": "Busca un libro que estés leyendo o quieras leer y añádelo aquí.",
+  "findABook": "Buscar un libro",
+  "emptyFilterTitle": "Aún no hay nada",
+  "emptyFilterMessage": "Los libros que marques como «{shelf}» aparecerán aquí.",
+  "loadFailed": "No hemos podido cargar tu estantería."
+}

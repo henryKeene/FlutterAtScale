@@ -1,0 +1,22 @@
+name: core_widgetbook
+description: What every Bookshelf Widgetbook shares. Only Widgetbooks may depend on it.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.13.0
+  flutter: ">=3.47.0"
+
+resolution: workspace
+
+dependencies:
+  core_design_system: any
+  flutter:
+    sdk: flutter
+  material_ui: ^1.7.0
+  widgetbook: ^3.25.0
+
+dev_dependencies:
+  core_analysis: any
+  flutter_test:
+    sdk: flutter

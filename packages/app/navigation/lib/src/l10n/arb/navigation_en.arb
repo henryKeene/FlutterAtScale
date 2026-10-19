@@ -1,0 +1,19 @@
+{
+  "@@locale": "en",
+  "tabMyBooks": "My books",
+  "@tabMyBooks": {
+    "description": "Bottom navigation tab for the shelf."
+  },
+  "tabDiscover": "Discover",
+  "@tabDiscover": {
+    "description": "Bottom navigation tab for search."
+  },
+  "tabStats": "Stats",
+  "@tabStats": {
+    "description": "Bottom navigation tab for reading stats."
+  },
+  "tabSettings": "Settings",
+  "@tabSettings": {
+    "description": "Bottom navigation tab for settings."
+  }
+}

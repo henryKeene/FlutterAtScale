@@ -1,0 +1,5 @@
+{
+  "@@locale": "es",
+  "title": "{{name.sentenceCase()}}",
+  "emptyMessage": "Aún no hay nada."
+}

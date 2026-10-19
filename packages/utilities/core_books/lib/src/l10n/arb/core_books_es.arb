@@ -1,0 +1,10 @@
+{
+  "@@locale": "es",
+  "readingStatusReading": "Leyendo",
+  "readingStatusWantToRead": "Por leer",
+  "readingStatusRead": "Leído",
+  "unknownAuthor": "Autor desconocido",
+  "catalogUnavailable": "No hemos podido conectar con Open Library. Comprueba tu conexión e inténtalo de nuevo.",
+  "bookNotFound": "No hemos encontrado ese libro.",
+  "libraryFailure": "No hemos podido actualizar tu estantería. Inténtalo de nuevo."
+}

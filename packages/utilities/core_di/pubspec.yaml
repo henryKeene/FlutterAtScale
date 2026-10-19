@@ -1,0 +1,16 @@
+name: core_di
+description: The shared GetIt instance and helpers for feature scoped dependencies.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.13.0
+
+resolution: workspace
+
+dependencies:
+  get_it: ^9.3.0
+
+dev_dependencies:
+  core_analysis: any
+  test: ^1.26.0

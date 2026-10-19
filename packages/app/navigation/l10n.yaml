@@ -1,0 +1,7 @@
+arb-dir: lib/src/l10n/arb
+template-arb-file: navigation_en.arb
+output-dir: lib/src/l10n/gen
+output-localization-file: navigation_localizations.dart
+output-class: NavigationLocalizations
+nullable-getter: false
+format: true

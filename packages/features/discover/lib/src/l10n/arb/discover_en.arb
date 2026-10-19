@@ -1,0 +1,40 @@
+{
+  "@@locale": "en",
+  "title": "Discover",
+  "@title": {
+    "description": "Title of the Discover page."
+  },
+  "searchHint": "Title, author or subject",
+  "@searchHint": {
+    "description": "Hint in the search field."
+  },
+  "clearSearch": "Clear",
+  "@clearSearch": {
+    "description": "Tooltip on the button that clears the search."
+  },
+  "idleTitle": "Find your next book",
+  "@idleTitle": {
+    "description": "Heading shown before the user searches."
+  },
+  "idleMessage": "Search Open Library by title, author or subject.",
+  "@idleMessage": {
+    "description": "Explains what can be searched."
+  },
+  "noMatchesTitle": "No matches",
+  "@noMatchesTitle": {
+    "description": "Heading shown when a search finds nothing."
+  },
+  "noMatchesMessage": "Nothing on Open Library matched \"{query}\".",
+  "@noMatchesMessage": {
+    "description": "Explains that a search found nothing. The placeholder is what the user searched for.",
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "trendingToday": "Trending today",
+  "@trendingToday": {
+    "description": "Heading above the list of trending books."
+  }
+}

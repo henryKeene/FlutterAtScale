@@ -1,0 +1,17 @@
+{
+  "@@locale": "es",
+  "removeFromShelf": "Quitar de la estantería",
+  "savedCopyTitle": "Mostrando tu copia guardada",
+  "savedCopyMessage": "No se ha podido conectar con Open Library.",
+  "aboutThisBook": "Sobre este libro",
+  "subjects": "Temas",
+  "addToShelf": "Añadir a la estantería",
+  "changeShelf": "Cambiar de estantería",
+  "movedTo": "Movido a «{shelf}»",
+  "firstPublished": "Publicado por primera vez en {year}",
+  "yourReview": "Tu reseña",
+  "skip": "Omitir",
+  "reviewPrompt": "¿Qué te ha parecido {title}?",
+  "reviewHint": "¿Qué opinas?",
+  "saveReview": "Guardar reseña"
+}

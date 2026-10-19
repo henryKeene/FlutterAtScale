@@ -1,0 +1,22 @@
+name: feature
+description: A feature package with its flow, cubit, DI scope and navigation contract.
+version: 0.1.0+1
+
+environment:
+  mason: ^0.1.0
+
+vars:
+  name:
+    type: string
+    description: The feature name in snake_case, for example reading_list.
+    prompt: What is the feature called?
+  description:
+    type: string
+    description: One line describing the feature, used in its pubspec.
+    default: A Bookshelf feature.
+    prompt: Describe it in one line.
+  has_navigation:
+    type: boolean
+    description: Whether the feature navigates out to other features.
+    default: true
+    prompt: Does it navigate out to other features?

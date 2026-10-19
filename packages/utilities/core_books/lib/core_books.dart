@@ -1,0 +1,11 @@
+export 'src/domain/di/di_init.dart' show initialize;
+export 'src/domain/failures/catalog_failure.dart';
+export 'src/domain/failures/library_failure.dart';
+export 'src/domain/interfaces/i_book_catalog_service.dart';
+export 'src/domain/interfaces/i_library_service.dart';
+export 'src/domain/interfaces/i_reading_goal_service.dart';
+export 'src/domain/models/book.dart';
+export 'src/domain/models/reading_status.dart';
+export 'src/domain/models/shelf_entry.dart';
+export 'src/l10n/book_text.dart';
+export 'src/l10n/gen/core_books_localizations.dart' show CoreBooksLocalizations;

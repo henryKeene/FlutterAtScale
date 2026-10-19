@@ -1,0 +1,61 @@
+{
+  "@@locale": "en",
+  "title": "Reading stats",
+  "@title": {
+    "description": "Title of the reading stats page."
+  },
+  "emptyTitle": "Nothing to count yet",
+  "@emptyTitle": {
+    "description": "Heading shown when the shelf is empty."
+  },
+  "emptyMessage": "Add a few books to your shelf to see your stats.",
+  "@emptyMessage": {
+    "description": "Explains how to get stats."
+  },
+  "findABook": "Find a book",
+  "@findABook": {
+    "description": "Button that opens Discover from the empty stats page."
+  },
+  "goalTitle": "{year} reading goal",
+  "@goalTitle": {
+    "description": "Heading of the yearly goal card.",
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "goalProgress": "{read} of {goal, plural, =1{1 book} other{{goal} books}}",
+  "@goalProgress": {
+    "description": "Books finished out of the yearly goal.",
+    "placeholders": {
+      "read": {
+        "type": "int"
+      },
+      "goal": {
+        "type": "int"
+      }
+    }
+  },
+  "booksToGo": "{count, plural, =1{1 book to go} other{{count} books to go}}",
+  "@booksToGo": {
+    "description": "How many books are left to reach the goal.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "goalReached": "Goal reached. Nice work.",
+  "@goalReached": {
+    "description": "Shown once the yearly goal is met."
+  },
+  "averageRating": "Avg rating",
+  "@averageRating": {
+    "description": "Label under the average rating figure."
+  },
+  "finishedByMonth": "Finished by month",
+  "@finishedByMonth": {
+    "description": "Heading of the monthly chart."
+  }
+}

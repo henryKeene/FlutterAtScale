@@ -1,0 +1,36 @@
+{
+  "@@locale": "en",
+  "title": "My books",
+  "@title": {
+    "description": "Title of the My books page."
+  },
+  "emptyShelfTitle": "Your shelf is empty",
+  "@emptyShelfTitle": {
+    "description": "Heading shown when the user has no books at all."
+  },
+  "emptyShelfMessage": "Find a book you are reading or want to read and add it here.",
+  "@emptyShelfMessage": {
+    "description": "Explains how to fill an empty shelf."
+  },
+  "findABook": "Find a book",
+  "@findABook": {
+    "description": "Button that opens Discover from an empty shelf."
+  },
+  "emptyFilterTitle": "Nothing here yet",
+  "@emptyFilterTitle": {
+    "description": "Heading shown when the selected shelf has no books."
+  },
+  "emptyFilterMessage": "Books you mark as \"{shelf}\" show up here.",
+  "@emptyFilterMessage": {
+    "description": "Explains what appears on an empty shelf. The placeholder is the shelf name.",
+    "placeholders": {
+      "shelf": {
+        "type": "String"
+      }
+    }
+  },
+  "loadFailed": "We couldn't load your shelf.",
+  "@loadFailed": {
+    "description": "Error when the shelf cannot be read."
+  }
+}

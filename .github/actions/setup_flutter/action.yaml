@@ -1,0 +1,32 @@
+name: Set up Flutter with FVM
+description: Installs FVM and the Flutter version pinned in .fvmrc, then puts both on the PATH.
+
+runs:
+  using: composite
+  steps:
+    - name: Cache Flutter SDKs
+      uses: actions/cache@v4
+      with:
+        path: ~/fvm/versions
+        key: fvm-${{ runner.os }}-${{ hashFiles('.fvmrc') }}
+
+    - name: Cache pub packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.pub-cache
+        key: pub-${{ runner.os }}-${{ hashFiles('**/pubspec.yaml') }}
+        restore-keys: pub-${{ runner.os }}-
+
+    - name: Install FVM
+      shell: bash
+      run: |
+        curl -fsSL https://fvm.app/install.sh | bash
+        echo "$HOME/fvm/bin" >> "$GITHUB_PATH"
+
+    - name: Install the pinned Flutter
+      shell: bash
+      run: |
+        export PATH="$HOME/fvm/bin:$PATH"
+        fvm install --setup
+        fvm use --force --skip-pub-get
+        fvm flutter --version

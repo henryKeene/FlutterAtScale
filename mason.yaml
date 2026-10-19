@@ -1,0 +1,7 @@
+bricks:
+  feature:
+    path: bricks/feature
+  core_package:
+    path: bricks/core_package
+  cubit:
+    path: bricks/cubit

@@ -1,0 +1,74 @@
+{
+  "@@locale": "en",
+  "removeFromShelf": "Remove from shelf",
+  "@removeFromShelf": {
+    "description": "Tooltip on the button that removes the book from the shelf."
+  },
+  "savedCopyTitle": "Showing your saved copy",
+  "@savedCopyTitle": {
+    "description": "Shown when the book comes from the shelf because Open Library is unreachable."
+  },
+  "savedCopyMessage": "Open Library could not be reached.",
+  "@savedCopyMessage": {
+    "description": "Explains why the saved copy is shown."
+  },
+  "aboutThisBook": "About this book",
+  "@aboutThisBook": {
+    "description": "Heading above the book description."
+  },
+  "subjects": "Subjects",
+  "@subjects": {
+    "description": "Heading above the subject chips."
+  },
+  "addToShelf": "Add to shelf",
+  "@addToShelf": {
+    "description": "Button that starts adding the book to a shelf."
+  },
+  "changeShelf": "Change shelf",
+  "@changeShelf": {
+    "description": "Button that moves a shelved book to another shelf."
+  },
+  "movedTo": "Moved to {shelf}",
+  "@movedTo": {
+    "description": "Confirmation after a book is shelved. The placeholder is the shelf name.",
+    "placeholders": {
+      "shelf": {
+        "type": "String"
+      }
+    }
+  },
+  "firstPublished": "First published {year}",
+  "@firstPublished": {
+    "description": "When the book first came out.",
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "yourReview": "Your review",
+  "@yourReview": {
+    "description": "Heading of the review card and title of the review page."
+  },
+  "skip": "Skip",
+  "@skip": {
+    "description": "Skips writing a review."
+  },
+  "reviewPrompt": "How was {title}?",
+  "@reviewPrompt": {
+    "description": "Question at the top of the review page. The placeholder is the book title.",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "reviewHint": "What did you think?",
+  "@reviewHint": {
+    "description": "Hint in the review text field."
+  },
+  "saveReview": "Save review",
+  "@saveReview": {
+    "description": "Button that saves the rating and review."
+  }
+}

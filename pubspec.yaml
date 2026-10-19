@@ -1,0 +1,173 @@
+name: bookshelf_workspace
+publish_to: none
+
+environment:
+  sdk: ^3.13.0
+
+workspace:
+  - packages/app/bookshelf
+  - packages/app/navigation
+
+  - packages/features/book_details
+  - packages/features/book_details/widgetbook
+  - packages/features/debug_menu
+  - packages/features/discover
+  - packages/features/my_books
+  - packages/features/my_books/widgetbook
+  - packages/features/reading_stats
+  - packages/features/settings
+
+  - packages/utilities/core_analysis
+  - packages/utilities/core_books
+  - packages/utilities/core_config
+  - packages/utilities/core_design_system
+  - packages/utilities/core_design_system/widgetbook
+  - packages/utilities/core_di
+  - packages/utilities/core_feature_flags
+  - packages/utilities/core_l10n
+  - packages/utilities/core_network
+  - packages/utilities/core_prelude
+  - packages/utilities/core_storage
+  - packages/utilities/core_widgetbook
+
+dev_dependencies:
+  melos: ^8.9.0
+  yaml: ^3.1.3
+
+melos:
+  sdkPath: .fvm/flutter_sdk
+
+  categories:
+    app:
+      - packages/app/*
+    features:
+      - packages/features/*
+    sandboxes:
+      - packages/features/*/widgetbook
+      - packages/utilities/*/widgetbook
+    utilities:
+      - packages/utilities/*
+
+  ide:
+    intellij:
+      enabled: false
+
+  scripts:
+    gen:
+      description: Generate the injectable DI config in every package that uses it.
+      exec:
+        command: dart run build_runner build --delete-conflicting-outputs
+        concurrency: 1
+        orderDependents: true
+      packageFilters:
+        dependsOn: build_runner
+
+    l10n:
+      description: Generate the localizations in every package that has an l10n.yaml.
+      exec:
+        command: flutter gen-l10n
+      packageFilters:
+        fileExists: l10n.yaml
+
+    l10n:check:
+      description: Fail if any package is missing a locale, a translation or a description.
+      run: dart run tool/check_l10n.dart
+
+    test:
+      description: Run every test in the workspace.
+      dependsOn:
+        - test:flutter
+        - test:dart
+
+    test:flutter:
+      description: Run the tests in every Flutter package that has them.
+      exec:
+        command: flutter test --no-pub
+        failFast: true
+      packageFilters:
+        dirExists: test
+        flutter: true
+
+    test:dart:
+      description: Run the tests in every pure Dart package that has them.
+      exec:
+        command: dart test
+        failFast: true
+      packageFilters:
+        dirExists: test
+        flutter: false
+
+    test:integration:
+      description: Drive the app on a booted simulator or connected device.
+      run: cd packages/app/bookshelf && flutter test integration_test
+      stdio: inherit
+
+    coverage:
+      description: Run the Flutter package tests with coverage.
+      exec:
+        command: flutter test --no-pub --coverage
+      packageFilters:
+        dirExists: test
+        flutter: true
+
+    format:check:
+      description: Fail if any Dart file is not formatted.
+      run: dart format --output=none --set-exit-if-changed packages tool
+
+    boundaries:
+      description: Fail if a package depends on a layer it should not.
+      run: dart run tool/check_boundaries.dart
+
+    check:
+      description: Everything CI runs, in order.
+      dependsOn:
+        - format:check
+        - boundaries
+        - l10n:check
+        - analyze
+        - test
+
+    analyze:
+      description: Analyze every package, treating infos as errors.
+      exec:
+        command: flutter analyze --no-pub --fatal-infos .
+
+    new:feature:
+      description: Scaffold a feature package from the feature brick.
+      run: dart pub global run mason_cli:mason get && dart pub global run mason_cli:mason make feature
+      stdio: inherit
+
+    new:core:
+      description: Scaffold a utility package from the core_package brick.
+      run: dart pub global run mason_cli:mason get && dart pub global run mason_cli:mason make core_package
+      stdio: inherit
+
+    widgetbook:design_system:
+      description: Run the design system's Widgetbook, its tokens and components, in Chrome.
+      run: cd packages/utilities/core_design_system/widgetbook && flutter run -d chrome
+      stdio: inherit
+
+    widgetbook:book_details:
+      description: Run the book_details feature on its own, against fakes, in Widgetbook.
+      run: cd packages/features/book_details/widgetbook && flutter run -d chrome
+      stdio: inherit
+
+    widgetbook:my_books:
+      description: Run the my_books feature on its own, against fakes, in Widgetbook.
+      run: cd packages/features/my_books/widgetbook && flutter run -d chrome
+      stdio: inherit
+
+    run:dev:
+      description: Run the development flavour.
+      run: cd packages/app/bookshelf && flutter run -t lib/main_development.dart
+      stdio: inherit
+
+    run:staging:
+      description: Run the staging flavour.
+      run: cd packages/app/bookshelf && flutter run -t lib/main_staging.dart
+      stdio: inherit
+
+    run:prod:
+      description: Run the production flavour.
+      run: cd packages/app/bookshelf && flutter run -t lib/main_production.dart --release
+      stdio: inherit

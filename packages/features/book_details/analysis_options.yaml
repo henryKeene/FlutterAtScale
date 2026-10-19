@@ -1,0 +1,4 @@
+analyzer:
+  exclude:
+    - build/**
+include: package:core_analysis/analysis_options.yaml

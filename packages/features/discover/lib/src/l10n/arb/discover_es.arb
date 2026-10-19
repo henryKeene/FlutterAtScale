@@ -1,0 +1,11 @@
+{
+  "@@locale": "es",
+  "title": "Descubrir",
+  "searchHint": "Título, autor o tema",
+  "clearSearch": "Borrar",
+  "idleTitle": "Encuentra tu próximo libro",
+  "idleMessage": "Busca en Open Library por título, autor o tema.",
+  "noMatchesTitle": "Sin resultados",
+  "noMatchesMessage": "Nada en Open Library coincide con «{query}».",
+  "trendingToday": "Tendencias de hoy"
+}

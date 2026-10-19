@@ -1,0 +1,11 @@
+{
+  "@@locale": "en",
+  "title": "{{name.sentenceCase()}}",
+  "@title": {
+    "description": "Title of the {{name.sentenceCase()}} page."
+  },
+  "emptyMessage": "Nothing here yet.",
+  "@emptyMessage": {
+    "description": "Shown before the feature has any content."
+  }
+}

@@ -1,0 +1,34 @@
+name: core_feature_flags
+description: Feature flags resolved from environment defaults, a remote source and local overrides.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.13.0
+
+resolution: workspace
+
+dependencies:
+  core_config: any
+  core_di: any
+  core_prelude: any
+  core_storage: any
+  equatable: ^3.0.0
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^9.1.1
+  get_it: ^9.3.0
+  injectable: ^3.0.0
+
+dev_dependencies:
+  bloc_test: ^10.0.0
+  build_runner: ^2.16.1
+  core_analysis: any
+  flutter_test:
+    sdk: flutter
+  injectable_generator: ^3.1.3
+  mocktail: ^1.0.5
+
+flutter:
+  assets:
+    - assets/remote_flags.json

@@ -1,0 +1,6 @@
+analyzer:
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+include: package:core_analysis/analysis_options.yaml

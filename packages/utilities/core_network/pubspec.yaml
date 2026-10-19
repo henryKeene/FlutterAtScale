@@ -1,0 +1,26 @@
+name: core_network
+description: A small JSON API client that returns Results instead of throwing.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.13.0
+
+resolution: workspace
+
+dependencies:
+  core_config: any
+  core_di: any
+  core_prelude: any
+  flutter:
+    sdk: flutter
+  get_it: ^9.3.0
+  http: ^1.6.0
+  injectable: ^3.0.0
+
+dev_dependencies:
+  build_runner: ^2.16.1
+  core_analysis: any
+  flutter_test:
+    sdk: flutter
+  injectable_generator: ^3.1.3

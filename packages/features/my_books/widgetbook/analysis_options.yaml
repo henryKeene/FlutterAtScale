@@ -1,0 +1,5 @@
+analyzer:
+  exclude:
+    - build/**
+    - web/**
+include: package:core_analysis/analysis_options.yaml

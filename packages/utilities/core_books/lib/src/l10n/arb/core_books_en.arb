@@ -1,0 +1,31 @@
+{
+  "@@locale": "en",
+  "readingStatusReading": "Reading",
+  "@readingStatusReading": {
+    "description": "Shelf for books the user is reading right now."
+  },
+  "readingStatusWantToRead": "Want to read",
+  "@readingStatusWantToRead": {
+    "description": "Shelf for books the user plans to read."
+  },
+  "readingStatusRead": "Read",
+  "@readingStatusRead": {
+    "description": "Shelf for books the user has finished."
+  },
+  "unknownAuthor": "Unknown author",
+  "@unknownAuthor": {
+    "description": "Shown in place of an author when a book has none."
+  },
+  "catalogUnavailable": "We couldn't reach Open Library. Check your connection and try again.",
+  "@catalogUnavailable": {
+    "description": "Error when the Open Library catalogue cannot be reached."
+  },
+  "bookNotFound": "We couldn't find that book.",
+  "@bookNotFound": {
+    "description": "Error when Open Library has no book with the requested id."
+  },
+  "libraryFailure": "We couldn't update your shelf. Please try again.",
+  "@libraryFailure": {
+    "description": "Error when a change to the user's shelf cannot be saved."
+  }
+}

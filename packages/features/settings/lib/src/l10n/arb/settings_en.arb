@@ -1,0 +1,84 @@
+{
+  "@@locale": "en",
+  "title": "Settings",
+  "@title": {
+    "description": "Title of the settings page."
+  },
+  "appearance": "Appearance",
+  "@appearance": {
+    "description": "Heading of the theme section."
+  },
+  "themeSystem": "System",
+  "@themeSystem": {
+    "description": "Theme option that follows the device."
+  },
+  "themeLight": "Light",
+  "@themeLight": {
+    "description": "Light theme option."
+  },
+  "themeDark": "Dark",
+  "@themeDark": {
+    "description": "Dark theme option."
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Heading of the language section."
+  },
+  "languageSystem": "System",
+  "@languageSystem": {
+    "description": "Language option that follows the device."
+  },
+  "readingSection": "Reading",
+  "@readingSection": {
+    "description": "Heading of the reading goal section."
+  },
+  "yearlyGoal": "Yearly goal",
+  "@yearlyGoal": {
+    "description": "Label of the yearly reading goal setting."
+  },
+  "goalBooks": "{count, plural, =1{1 book} other{{count} books}}",
+  "@goalBooks": {
+    "description": "The current yearly goal.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "fewerBooks": "Fewer",
+  "@fewerBooks": {
+    "description": "Tooltip on the button that lowers the goal."
+  },
+  "moreBooks": "More",
+  "@moreBooks": {
+    "description": "Tooltip on the button that raises the goal."
+  },
+  "about": "About",
+  "@about": {
+    "description": "Heading of the about section."
+  },
+  "environment": "Environment",
+  "@environment": {
+    "description": "Label of the build environment row."
+  },
+  "developerOptions": "Developer options",
+  "@developerOptions": {
+    "description": "Entry point to the debug menu."
+  },
+  "developerOptionsSubtitle": "Feature flags and overrides",
+  "@developerOptionsSubtitle": {
+    "description": "Explains what the developer options contain."
+  },
+  "environmentDevelopment": "Development",
+  "@environmentDevelopment": {
+    "description": "Name of the development build."
+  },
+  "environmentStaging": "Staging",
+  "@environmentStaging": {
+    "description": "Name of the staging build."
+  },
+  "environmentProduction": "Production",
+  "@environmentProduction": {
+    "description": "Name of the production build."
+  }
+}

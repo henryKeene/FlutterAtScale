@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Format, boundaries, analyze and test
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup_flutter
+
+      - name: Bootstrap the workspace
+        run: fvm dart run melos bootstrap
+
+      - name: Generated code is up to date
+        run: |
+          fvm dart run melos run gen --no-select
+          fvm dart run melos run l10n --no-select
+          git diff --exit-code -- '*.config.dart' '*_localizations*.dart' \
+            '*.directories.g.dart'
+
+      - name: Check
+        run: fvm dart run melos run check --no-select
+
+  build:
+    name: Build the development APK
+    needs: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: ./.github/actions/setup_flutter
+
+      - name: Bootstrap the workspace
+        run: fvm dart run melos bootstrap
+
+      - name: Build
+        working-directory: packages/app/bookshelf
+        run: fvm flutter build apk --debug -t lib/main_development.dart
+
+  widgetbook:
+    name: Build the ${{ matrix.name }} Widgetbook
+    needs: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        include:
+          - name: design system
+            artifact: widgetbook-design-system
+            path: packages/utilities/core_design_system/widgetbook
+          - name: book_details
+            artifact: widgetbook-book-details
+            path: packages/features/book_details/widgetbook
+          - name: my_books
+            artifact: widgetbook-my-books
+            path: packages/features/my_books/widgetbook
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup_flutter
+
+      - name: Bootstrap the workspace
+        run: fvm dart run melos bootstrap
+
+      - name: Build
+        working-directory: ${{ matrix.path }}
+        run: fvm flutter build web
+
+      - name: Keep the build for review
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: ${{ matrix.path }}/build/web

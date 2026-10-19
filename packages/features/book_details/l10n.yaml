@@ -1,0 +1,7 @@
+arb-dir: lib/src/l10n/arb
+template-arb-file: book_details_en.arb
+output-dir: lib/src/l10n/gen
+output-localization-file: book_details_localizations.dart
+output-class: BookDetailsLocalizations
+nullable-getter: false
+format: true

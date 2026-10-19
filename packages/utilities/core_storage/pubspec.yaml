@@ -1,0 +1,22 @@
+name: core_storage
+description: Key value persistence behind an interface.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.13.0
+
+resolution: workspace
+
+dependencies:
+  core_di: any
+  flutter:
+    sdk: flutter
+  get_it: ^9.3.0
+  injectable: ^3.0.0
+  shared_preferences: ^2.5.6
+
+dev_dependencies:
+  build_runner: ^2.16.1
+  core_analysis: any
+  injectable_generator: ^3.1.3

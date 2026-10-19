@@ -1,0 +1,29 @@
+name: core_design_system_widgetbook
+description: The Bookshelf design system in Widgetbook. Every token and component, in every theme mode.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.13.0
+  flutter: ">=3.47.0"
+
+resolution: workspace
+
+dependencies:
+  core_design_system: any
+  core_widgetbook: any
+  flutter:
+    sdk: flutter
+  material_ui: ^1.7.0
+  widgetbook: ^3.25.0
+  widgetbook_annotation: ^3.11.0
+
+dev_dependencies:
+  build_runner: ^2.16.1
+  core_analysis: any
+  flutter_test:
+    sdk: flutter
+  widgetbook_generator: ^3.24.0
+
+flutter:
+  uses-material-design: true

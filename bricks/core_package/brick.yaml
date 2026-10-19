@@ -1,0 +1,17 @@
+name: core_package
+description: A utility package that any feature can depend on, with a service behind an interface.
+version: 0.1.0+1
+
+environment:
+  mason: ^0.1.0
+
+vars:
+  name:
+    type: string
+    description: The package name without the core_ prefix, for example analytics.
+    prompt: What is it called (without core_)?
+  description:
+    type: string
+    description: One line describing the package, used in its pubspec.
+    default: A shared Bookshelf utility.
+    prompt: Describe it in one line.

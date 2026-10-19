@@ -1,0 +1,37 @@
+name: bookshelf
+description: Bookshelf, a reading tracker built on Open Library.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ^3.13.0
+  flutter: ">=3.47.0"
+
+resolution: workspace
+
+dependencies:
+  core_books: any
+  core_config: any
+  core_design_system: any
+  core_di: any
+  core_feature_flags: any
+  core_l10n: any
+  core_network: any
+  core_storage: any
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^9.1.1
+  material_ui: ^1.7.0
+  navigation: any
+
+dev_dependencies:
+  bloc_test: ^10.0.0
+  core_analysis: any
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  mocktail: ^1.0.5
+
+flutter:
+  uses-material-design: true

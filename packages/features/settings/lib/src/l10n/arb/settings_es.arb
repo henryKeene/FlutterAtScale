@@ -1,0 +1,22 @@
+{
+  "@@locale": "es",
+  "title": "Ajustes",
+  "appearance": "Apariencia",
+  "themeSystem": "Sistema",
+  "themeLight": "Claro",
+  "themeDark": "Oscuro",
+  "language": "Idioma",
+  "languageSystem": "Sistema",
+  "readingSection": "Lectura",
+  "yearlyGoal": "Objetivo anual",
+  "goalBooks": "{count, plural, =1{1 libro} other{{count} libros}}",
+  "fewerBooks": "Menos",
+  "moreBooks": "Más",
+  "about": "Acerca de",
+  "environment": "Entorno",
+  "developerOptions": "Opciones de desarrollador",
+  "developerOptionsSubtitle": "Feature flags y anulaciones",
+  "environmentDevelopment": "Desarrollo",
+  "environmentStaging": "Preproducción",
+  "environmentProduction": "Producción"
+}

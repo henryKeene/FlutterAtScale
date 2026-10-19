@@ -1,0 +1,34 @@
+name: navigation
+description: The app router. Connects features together and implements their navigation contracts.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.13.0
+  flutter: ">=3.47.0"
+
+resolution: workspace
+
+dependencies:
+  book_details: any
+  core_config: any
+  core_di: any
+  core_feature_flags: any
+  debug_menu: any
+  discover: any
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  go_router: ^18.1.0
+  intl: any
+  material_ui: ^1.7.0
+  my_books: any
+  reading_stats: any
+  settings: any
+
+dev_dependencies:
+  core_analysis: any
+
+flutter:
+  generate: true

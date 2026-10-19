@@ -1,0 +1,9 @@
+targets:
+  $default:
+    builders:
+      # widgetbook_generator sends usage data to Mixpanel on every build: a
+      # hash of your git email, the repository's first commit and the
+      # remote's owner URL. It is off here.
+      # https://docs.widgetbook.io/telemetry
+      widgetbook_generator:telemetry:
+        enabled: false

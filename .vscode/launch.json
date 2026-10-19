@@ -1,0 +1,51 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Bookshelf (development)",
+      "request": "launch",
+      "type": "dart",
+      "cwd": "packages/app/bookshelf",
+      "program": "lib/main_development.dart"
+    },
+    {
+      "name": "Bookshelf (staging)",
+      "request": "launch",
+      "type": "dart",
+      "cwd": "packages/app/bookshelf",
+      "program": "lib/main_staging.dart"
+    },
+    {
+      "name": "Bookshelf (production)",
+      "request": "launch",
+      "type": "dart",
+      "cwd": "packages/app/bookshelf",
+      "program": "lib/main_production.dart",
+      "flutterMode": "release"
+    },
+    {
+      "name": "Widgetbook: core_design_system",
+      "request": "launch",
+      "type": "dart",
+      "cwd": "packages/utilities/core_design_system/widgetbook",
+      "program": "lib/main.dart",
+      "deviceId": "chrome"
+    },
+    {
+      "name": "Widgetbook: book_details",
+      "request": "launch",
+      "type": "dart",
+      "cwd": "packages/features/book_details/widgetbook",
+      "program": "lib/main.dart",
+      "deviceId": "chrome"
+    },
+    {
+      "name": "Widgetbook: my_books",
+      "request": "launch",
+      "type": "dart",
+      "cwd": "packages/features/my_books/widgetbook",
+      "program": "lib/main.dart",
+      "deviceId": "chrome"
+    }
+  ]
+}
