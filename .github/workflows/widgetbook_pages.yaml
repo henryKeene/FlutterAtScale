@@ -3,7 +3,9 @@ name: Widgetbook on GitHub Pages
 # Publishes the catalogue, every Widgetbook in one app, to GitHub Pages, where
 # anyone can use it: main's at the root of the site, and each pull request's
 # at pr-preview/pr-<number>/, with a comment on the pull request linking to
-# it. A pull request's preview is removed when it closes.
+# it. The comment links straight to the use cases the pull request changes,
+# found by tool/widgetbook_links.dart. A pull request's preview is removed
+# when it closes.
 #
 # Needs Settings > Pages to deploy from the gh-pages branch, and
 # Settings > Actions > General to give workflows read and write permissions.
@@ -30,6 +32,9 @@ jobs:
       SITE_PATH: ${{ github.event_name == 'pull_request' && format('pr-preview/pr-{0}/', github.event.number) || '' }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          # The whole history, so a pull request can be compared with its base.
+          fetch-depth: 0
 
       - uses: ./.github/actions/setup_flutter
         if: github.event.action != 'closed'
@@ -44,17 +49,42 @@ jobs:
         if: github.event.action != 'closed'
         working-directory: packages/app/widgetbook
         run: |
+          # Describes every use case, for tool/widgetbook_links.dart.
+          fvm dart run build_runner build
           fvm flutter build web \
             --base-href "/${{ github.event.repository.name }}/${SITE_PATH}"
           cp -R build/web "$GITHUB_WORKSPACE/site"
           touch "$GITHUB_WORKSPACE/site/.nojekyll"
 
       - name: Publish the pull request's preview
+        id: preview
         if: github.event_name == 'pull_request'
         uses: rossjrw/pr-preview-action@v1.8.1
         with:
           source-dir: site
-          qr-code: false
+          comment: false
+
+      - name: Link the use cases the pull request changes
+        if: github.event_name == 'pull_request' && github.event.action != 'closed'
+        run: >
+          fvm dart run tool/widgetbook_links.dart
+          ${{ github.event.pull_request.base.sha }}
+          ${{ steps.preview.outputs.preview-url }}
+          > widgetbook_links.md
+
+      - name: Comment on the pull request
+        if: github.event_name == 'pull_request' && github.event.action != 'closed'
+        uses: marocchino/sticky-pull-request-comment@v3.0.5
+        with:
+          header: widgetbook-preview
+          path: widgetbook_links.md
+
+      - name: Say the preview is gone
+        if: github.event_name == 'pull_request' && github.event.action == 'closed'
+        uses: marocchino/sticky-pull-request-comment@v3.0.5
+        with:
+          header: widgetbook-preview
+          message: The Widgetbook preview was removed when this pull request closed.
 
       - name: Publish main
         if: github.event_name == 'push'

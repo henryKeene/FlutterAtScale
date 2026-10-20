@@ -9,7 +9,13 @@ import 'package:material_ui/material_ui.dart';
 import 'package:my_books_widgetbook/widgetbook.directories.g.dart' as my_books;
 import 'package:widgetbook/widgetbook.dart';
 
-Future<void> open(WidgetTester tester, String path) async {
+/// Opens [path]. A use case that animates forever, such as a loading
+/// spinner, never settles, so pass `settle: false` for it.
+Future<void> open(
+  WidgetTester tester,
+  String path, {
+  bool settle = true,
+}) async {
   tester.view
     ..physicalSize = const Size(1600, 1200)
     ..devicePixelRatio = 1;
@@ -21,7 +27,7 @@ Future<void> open(WidgetTester tester, String path) async {
   await tester.pumpWidget(Catalogue(key: ValueKey(route), initialRoute: route));
   await tester.pump();
   await tester.pump(const Duration(seconds: 4));
-  await tester.pumpAndSettle();
+  if (settle) await tester.pumpAndSettle();
 }
 
 int useCasesIn(List<WidgetbookNode> directories) =>
@@ -87,5 +93,21 @@ void main() {
     expect(tester.takeException(), isNull);
     expect(find.text('Piranesi'), findsOneWidget);
     expect(find.text('Dune'), findsNothing);
+  });
+
+  testWidgets('a flow is not stuck with how another left the fakes', (
+    tester,
+  ) async {
+    // My books' Loading use case leaves the shared shelf never loading...
+    await open(tester, 'my-books/mybooksflow/loading', settle: false);
+
+    // ...but book details still sees the book it shelves.
+    await open(tester, 'book-details/bookdetailsflow/full-details');
+    await tester.tap(find.text('Add to shelf'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Want to read'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Change shelf'), findsOneWidget);
   });
 }

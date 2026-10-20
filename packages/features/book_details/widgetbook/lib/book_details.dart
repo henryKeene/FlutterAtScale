@@ -146,7 +146,11 @@ Widget _bookDetails(
       value: start,
       apply: () {
         Fakes.catalog.behaviour = start.$2;
-        Fakes.library.seed([?start.$3.entryFor(start.$1)]);
+        // The shelf is shared with other Widgetbooks in the catalogue, so
+        // set how it behaves rather than trusting whatever they left.
+        Fakes.library
+          ..behaviour = ShelfBehaviour.loads
+          ..seed([?start.$3.entryFor(start.$1)]);
       },
       child: BookDetailsFlow(key: ValueKey(start), workId: start.$1.workId),
     ),
