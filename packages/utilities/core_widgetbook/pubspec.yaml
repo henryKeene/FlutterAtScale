@@ -11,6 +11,7 @@ resolution: workspace
 
 dependencies:
   core_design_system: any
+  core_di: any
   flutter:
     sdk: flutter
   material_ui: ^1.7.0

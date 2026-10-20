@@ -9,19 +9,20 @@ import 'package:core_widgetbook/core_widgetbook.dart';
 /// The four services `BookDetailsFlow` depends on, faked.
 ///
 /// They go in the root scope, where the app registers the real ones, so the
-/// flow finds them exactly as it finds the real services.
+/// flow finds them exactly as it finds the real services. The core fakes are
+/// shared instances, so this Widgetbook can run in one app with others.
 abstract final class Fakes {
-  static final catalog = FakeBookCatalogService();
-  static final library = FakeLibraryService();
-  static final flags = FakeFeatureFlagService();
+  static final FakeBookCatalogService catalog = FakeBookCatalogService.shared;
+  static final FakeLibraryService library = FakeLibraryService.shared;
+  static final FakeFeatureFlagService flags = FakeFeatureFlagService.shared;
   static final navigation = BookDetailsNavigationLog();
 
   static void register(GetIt getIt) {
     getIt
-      ..registerSingleton<IBookCatalogService>(catalog)
-      ..registerSingleton<ILibraryService>(library)
-      ..registerSingleton<IFeatureFlagService>(flags)
-      ..registerSingleton<IBookDetailsNavigation>(navigation);
+      ..registerFake<IBookCatalogService>(catalog)
+      ..registerFake<ILibraryService>(library)
+      ..registerFake<IFeatureFlagService>(flags)
+      ..registerFake<IBookDetailsNavigation>(navigation);
   }
 }
 

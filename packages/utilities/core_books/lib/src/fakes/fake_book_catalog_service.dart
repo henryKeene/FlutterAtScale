@@ -18,6 +18,10 @@ enum CatalogBehaviour {
 final class FakeBookCatalogService implements IBookCatalogService {
   new({this.books = SampleBooks.all});
 
+  /// The instance every Widgetbook in one app shares, so they all see the
+  /// same catalogue.
+  static final shared = FakeBookCatalogService();
+
   final List<Book> books;
   CatalogBehaviour behaviour = CatalogBehaviour.loads;
   Duration latency = const Duration(seconds: 3);

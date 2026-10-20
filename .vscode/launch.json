@@ -24,6 +24,14 @@
       "flutterMode": "release"
     },
     {
+      "name": "Widgetbook: everything",
+      "request": "launch",
+      "type": "dart",
+      "cwd": "packages/app/widgetbook",
+      "program": "lib/main.dart",
+      "deviceId": "chrome"
+    },
+    {
       "name": "Widgetbook: core_design_system",
       "request": "launch",
       "type": "dart",

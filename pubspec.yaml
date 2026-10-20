@@ -7,6 +7,7 @@ environment:
 workspace:
   - packages/app/bookshelf
   - packages/app/navigation
+  - packages/app/widgetbook
 
   - packages/features/book_details
   - packages/features/book_details/widgetbook
@@ -43,6 +44,7 @@ melos:
     features:
       - packages/features/*
     sandboxes:
+      - packages/app/widgetbook
       - packages/features/*/widgetbook
       - packages/utilities/*/widgetbook
     utilities:
@@ -140,6 +142,11 @@ melos:
     new:core:
       description: Scaffold a utility package from the core_package brick.
       run: dart pub global run mason_cli:mason get && dart pub global run mason_cli:mason make core_package
+      stdio: inherit
+
+    widgetbook:
+      description: Run every Widgetbook together, as one app, in Chrome.
+      run: cd packages/app/widgetbook && flutter run -d chrome
       stdio: inherit
 
     widgetbook:design_system:

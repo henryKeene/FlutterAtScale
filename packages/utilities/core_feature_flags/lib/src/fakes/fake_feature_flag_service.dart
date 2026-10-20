@@ -12,6 +12,10 @@ final class FakeFeatureFlagService implements IFeatureFlagService {
         for (final flag in FeatureFlag.values) flag: enabled[flag] ?? true,
       };
 
+  /// The instance every Widgetbook in one app shares, so they all see the
+  /// same flags.
+  static final shared = FakeFeatureFlagService();
+
   final Map<FeatureFlag, bool> _enabled;
   final _changes = StreamController<FeatureFlags>.broadcast();
 

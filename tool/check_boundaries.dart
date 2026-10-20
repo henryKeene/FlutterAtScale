@@ -2,13 +2,17 @@ import 'dart:io';
 
 import 'package:yaml/yaml.dart';
 
-enum Layer { app, features, sandboxes, utilities }
+enum Layer { app, catalogue, features, sandboxes, utilities }
 
 /// Apps nested inside a package that run it on its own, such as its
 /// Widgetbook.
 const sandboxFolders = ['sandbox', 'widgetbook'];
 
-/// Utilities only sandboxes may depend on.
+/// The one Widgetbook that puts the others together, for hosting. It may
+/// depend on any Widgetbook, feature or utility, and nothing may depend on it.
+const cataloguePath = 'packages/app/widgetbook';
+
+/// Utilities only sandboxes and the catalogue may depend on.
 const sandboxOnly = {'core_widgetbook'};
 
 /// A core package's fakes, such as `package:core_books/fakes.dart`, are for
@@ -24,10 +28,13 @@ typedef Package = ({
 });
 
 bool allowed(Package from, Package to) {
-  if (sandboxOnly.contains(to.name)) return from.layer == Layer.sandboxes;
+  if (sandboxOnly.contains(to.name)) {
+    return from.layer == Layer.sandboxes || from.layer == Layer.catalogue;
+  }
 
   return switch (from.layer) {
-    Layer.app => to.layer != Layer.sandboxes,
+    Layer.app => to.layer != Layer.sandboxes && to.layer != Layer.catalogue,
+    Layer.catalogue => to.layer != Layer.app,
     Layer.features || Layer.utilities => to.layer == Layer.utilities,
     Layer.sandboxes => to.layer == Layer.utilities || to.name == from.host,
   };
@@ -63,7 +70,8 @@ void main() {
 
 Iterable<String> fakeImports(Package package) sync* {
   final lib = Directory('${package.path}/lib');
-  if (package.layer == Layer.sandboxes || !lib.existsSync()) return;
+  final mayUseFakes = {Layer.sandboxes, Layer.catalogue};
+  if (mayUseFakes.contains(package.layer) || !lib.existsSync()) return;
 
   for (final file in lib.listSync(recursive: true).whereType<File>()) {
     if (!file.path.endsWith('.dart')) continue;
@@ -81,7 +89,10 @@ Iterable<Package> discover() sync* {
         .whereType<Directory>();
 
     for (final directory in directories) {
-      final package = readPackage(directory, layer);
+      final package = readPackage(
+        directory,
+        directory.path == cataloguePath ? Layer.catalogue : layer,
+      );
       if (package == null) continue;
       yield package;
 

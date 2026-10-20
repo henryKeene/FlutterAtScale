@@ -1,7 +1,6 @@
 import 'package:core_books/core_books.dart';
 import 'package:core_books/fakes.dart';
 import 'package:core_di/core_di.dart';
-import 'package:core_feature_flags/core_feature_flags.dart';
 import 'package:core_feature_flags/fakes.dart';
 import 'package:core_widgetbook/core_widgetbook.dart';
 import 'package:my_books/my_books.dart';
@@ -10,16 +9,18 @@ import 'package:my_books/my_books.dart';
 ///
 /// The library and navigation go in the root scope, where the app registers
 /// the real ones. The flags reach the screen through a `FeatureFlagsCubit`,
-/// which each use case provides, as the app does above every screen.
+/// which each use case provides, as the app does above every screen. The
+/// core fakes are shared instances, so this Widgetbook can run in one app
+/// with others.
 abstract final class Fakes {
-  static final library = FakeLibraryService();
-  static final flags = FakeFeatureFlagService({FeatureFlag.shelfGrid: false});
+  static final FakeLibraryService library = FakeLibraryService.shared;
+  static final FakeFeatureFlagService flags = FakeFeatureFlagService.shared;
   static final navigation = MyBooksNavigationLog();
 
   static void register(GetIt getIt) {
     getIt
-      ..registerSingleton<ILibraryService>(library)
-      ..registerSingleton<IMyBooksNavigation>(navigation);
+      ..registerFake<ILibraryService>(library)
+      ..registerFake<IMyBooksNavigation>(navigation);
   }
 }
 

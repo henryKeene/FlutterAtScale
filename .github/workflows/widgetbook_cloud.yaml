@@ -1,8 +1,9 @@
 name: Widgetbook Cloud
 
-# Pushes the design system's Widgetbook to Widgetbook Cloud on every push to a
-# branch. Widgetbook Cloud compares a pull request's build with its base
-# branch's and posts the review on the pull request.
+# Pushes the catalogue, every Widgetbook in one app, to Widgetbook Cloud on
+# every push to a branch. Widgetbook Cloud compares a pull request's build
+# with its base branch's and posts the review on the pull request, so a
+# design system change is reviewed together with every screen that uses it.
 #
 # It runs on push rather than on pull_request because a pull request is
 # checked out as a detached merge commit, and Widgetbook Cloud needs the
@@ -18,14 +19,14 @@ concurrency:
 
 jobs:
   push:
-    name: Push the design system's Widgetbook
+    name: Push the catalogue
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
       WIDGETBOOK_API_KEY: ${{ secrets.WIDGETBOOK_API_KEY }}
     defaults:
       run:
-        working-directory: packages/utilities/core_design_system/widgetbook
+        working-directory: packages/app/widgetbook
     steps:
       - uses: actions/checkout@v4
 

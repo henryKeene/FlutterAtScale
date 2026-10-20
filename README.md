@@ -24,7 +24,8 @@ Melos reads `sdkPath: .fvm/flutter_sdk` from the root `pubspec.yaml`, so every s
 packages/
 ├── app/
 │   ├── bookshelf/        composition root: flavours, bootstrap, DI, theme
-│   └── navigation/       go_router, the app shell, navigation implementations
+│   ├── navigation/       go_router, the app shell, navigation implementations
+│   └── widgetbook/       the catalogue: every Widgetbook in one app, for hosting
 ├── features/
 │   ├── my_books/         the user's shelves, with a Widgetbook
 │   ├── discover/         search and trending
@@ -52,6 +53,7 @@ Dependencies only point one way:
 - **features** can only depend on utilities, never on each other
 - **utilities** can only depend on other utilities
 - **sandboxes**, which are each package's Widgetbook, can only depend on the package they host and on utilities. Only they may depend on `core_widgetbook` or import a core package's `fakes.dart`.
+- the **catalogue**, `packages/app/widgetbook`, puts every Widgetbook together. It may depend on any Widgetbook, feature or utility, and nothing may depend on it.
 
 `melos run boundaries` fails the build if a pubspec breaks these rules.
 
@@ -184,8 +186,11 @@ A package with UI can have a [Widgetbook](https://www.widgetbook.io) nested insi
 | `packages/utilities/core_design_system/widgetbook` | Tokens and components | `melos run widgetbook:design_system` |
 | `packages/features/book_details/widgetbook` | The book details flow, fully interactive | `melos run widgetbook:book_details` |
 | `packages/features/my_books/widgetbook` | My books, in each state its screen can be in | `melos run widgetbook:my_books` |
+| `packages/app/widgetbook`, the catalogue | All of the above, in one app | `melos run widgetbook` |
 
 Each also has a launch configuration. A Widgetbook may only depend on the package it hosts and on utilities, so a feature's Widgetbook cannot see other features, and the design system's cannot see any.
+
+Teams work in their own package's Widgetbook, where it runs on its own and cannot reach anything else. The catalogue puts them all together for hosting: one Widgetbook Cloud project instead of one per package, and one link for designers. A design system change is then reviewed together with every screen that uses it. The catalogue has no use cases of its own. It shows each Widgetbook's generated navigation tree and registers each one's fakes.
 
 Knobs only change what Widgetbook shows. They never write back to the code or the tokens. What the app shows comes from feature code, and how it looks comes from the tokens. A designer uses Widgetbook to find edge cases and review changes. Knob values are part of the URL, so a link shows someone exactly what you see. Changes still go through a pull request.
 
@@ -210,7 +215,7 @@ Fakes live next to the interface they fake:
 - `package:core_books/fakes.dart`: `FakeBookCatalogService`, `FakeLibraryService` and `SampleBooks`, real Open Library works so their covers load, plus one with nothing but a title
 - `package:core_feature_flags/fakes.dart`: `FakeFeatureFlagService`
 
-Every Widgetbook uses the same fakes, and only its navigation fake is its own. They add no packages and no dependencies. Dart only compiles the libraries something imports, so the app never contains them, and `melos run boundaries` fails if app, feature or utility code imports a `fakes.dart`.
+Every Widgetbook uses the same fakes, and only its navigation fake is its own. Each fake has a `shared` instance, such as `FakeLibraryService.shared`, and `registerFake` from `core_widgetbook` registers it only once, so several Widgetbooks can run in the catalogue and see the same shelf. Each use case sets the fakes up for itself when it opens, so what one flow did never leaks into another. They add no packages and no dependencies. Dart only compiles the libraries something imports, so the app never contains them, and `melos run boundaries` fails if app, feature or utility code imports a `fakes.dart`.
 
 `core_widgetbook` holds what the Widgetbooks share: `BookshelfWidgetbook`, which sets up Widgetbook with every theme mode, locale, viewport and addon, plus `FakeSetup` and `showNavigation`. Only Widgetbooks may depend on it.
 
@@ -234,11 +239,13 @@ Two things are worth knowing:
 
 ### Hosting
 
-Every Widgetbook is on GitHub Pages, so anyone can use them without Flutter: [henrykeene.github.io/FlutterAtScale](https://henrykeene.github.io/FlutterAtScale/). `.github/workflows/widgetbook_pages.yaml` publishes `main`'s at the root of the site. It also publishes each pull request's at `pr-preview/pr-<number>/` and comments the link on the pull request, so a reviewer can try a changed flow before it merges. The preview is removed when the pull request closes. A link can open a use case with its knobs already set, such as `book-details/#/?path=book-details/bookdetailsflow/full-details&knobs={Review%20step:false}`.
+The catalogue is on GitHub Pages, so anyone can use every Widgetbook without Flutter: [henrykeene.github.io/FlutterAtScale](https://henrykeene.github.io/FlutterAtScale/). `.github/workflows/widgetbook_pages.yaml` publishes `main`'s at the root of the site. It also publishes each pull request's at `pr-preview/pr-<number>/` and comments the link on the pull request, so a reviewer can try a changed flow before it merges. The preview is removed when the pull request closes. A link can open a use case with its knobs already set, such as `#/?path=book-details/bookdetailsflow/full-details&knobs={Review%20step:false}`.
 
-The design system's Widgetbook is also on [Widgetbook Cloud](https://www.widgetbook.io/cloud). `.github/workflows/widgetbook_cloud.yaml` uploads a build on every push to a branch. When a pull request is open, Widgetbook Cloud compares its build with the base branch's and posts a review on the pull request, showing which use cases changed. The workflow needs the project's API key as the `WIDGETBOOK_API_KEY` repository secret, and skips the upload without it.
+The catalogue is also on [Widgetbook Cloud](https://www.widgetbook.io/cloud), as one project. `.github/workflows/widgetbook_cloud.yaml` uploads a build on every push to a branch. When a pull request is open, Widgetbook Cloud compares its build with the base branch's and posts a review on the pull request, showing which use cases changed. The workflow needs the project's API key as the `WIDGETBOOK_API_KEY` repository secret, and skips the upload without it.
 
-To upload a build by hand, run this from the Widgetbook's folder, with the pinned Flutter on your `PATH`:
+Widgetbook Cloud reviews the use cases build_runner describes in the uploading package's `.dart_tool`. Each package's Widgetbook lists `widgetbook_generator` as a normal dependency rather than a dev one, so building the catalogue describes every Widgetbook's use cases, not just its own.
+
+To upload a build by hand, run this from `packages/app/widgetbook`, with the pinned Flutter on your `PATH`:
 
 ```sh
 dart run build_runner build
@@ -284,6 +291,7 @@ Open **Settings → Developer options** in a development or staging build to fli
 | `boundaries` | Fails on a dependency that breaks the layer rules |
 | `check` | `format:check`, `boundaries`, `l10n:check`, `analyze` and `test`, as CI runs them |
 | `new:feature`, `new:core` | Scaffold a package from a mason brick |
+| `widgetbook` | Run the catalogue, every Widgetbook in one app, in Chrome |
 | `widgetbook:design_system` | Run the design system's Widgetbook, its tokens and components, in Chrome |
 | `widgetbook:book_details` | Run the book_details feature on its own, against fakes, in Widgetbook |
 | `widgetbook:my_books` | Run the my_books feature on its own, against fakes, in Widgetbook |
@@ -309,7 +317,7 @@ The feature and core hooks add the new package to the workspace, resolve depende
 
 ### CI
 
-`.github/workflows/ci.yaml` installs FVM and the pinned Flutter through `.github/actions/setup_flutter`, checks the committed DI config, localizations and Widgetbook trees are up to date, runs `melos run check`, and builds a development APK. Two more workflows host the Widgetbooks, as described under [Hosting](#hosting): `widgetbook_pages.yaml` publishes them to GitHub Pages, and `widgetbook_cloud.yaml` uploads the design system's to Widgetbook Cloud.
+`.github/workflows/ci.yaml` installs FVM and the pinned Flutter through `.github/actions/setup_flutter`, checks the committed DI config, localizations and Widgetbook trees are up to date, runs `melos run check`, and builds a development APK. Two more workflows host the Widgetbooks, as described under [Hosting](#hosting): `widgetbook_pages.yaml` publishes the catalogue to GitHub Pages, and `widgetbook_cloud.yaml` uploads it to Widgetbook Cloud.
 
 ### Editors
 
@@ -325,7 +333,7 @@ This is a demo, so a few things are deliberately light:
 - Spanish is the only second language, and the translations haven't been through a translator.
 - The design tokens are written by hand. [docs/design_tokens.md](docs/design_tokens.md) describes generating them from Figma.
 - The typography tokens name Roboto without bundling it. Android has it, and other platforms fall back to their system font. A real app would ship its brand font in `core_design_system`.
-- Only the design system's Widgetbook is on Widgetbook Cloud, which takes one project per Widgetbook, and only three packages have a Widgetbook so far.
+- Only three packages have a Widgetbook so far.
 
 ## Licence
 

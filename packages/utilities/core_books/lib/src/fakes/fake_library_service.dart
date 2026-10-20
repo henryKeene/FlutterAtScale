@@ -19,6 +19,10 @@ enum ShelfBehaviour {
 /// A shelf in memory. Books saved to it stay until it is seeded again, and
 /// anything watching it hears about every change.
 final class FakeLibraryService implements ILibraryService {
+  /// The instance every Widgetbook in one app shares, so they all see the
+  /// same shelf.
+  static final shared = FakeLibraryService();
+
   ShelfBehaviour behaviour = ShelfBehaviour.loads;
 
   /// Whether saving or removing a book fails.
