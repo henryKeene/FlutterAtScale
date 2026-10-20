@@ -82,6 +82,16 @@ final directories = <_widgetbook.WidgetbookNode>[
         ],
       ),
       _widgetbook.WidgetbookComponent(
+        name: 'LoadingIndicator',
+        useCases: [
+          _widgetbook.WidgetbookUseCase(
+            name: 'Default',
+            builder: _core_design_system_widgetbook_components_feedback
+                .loadingIndicator,
+          ),
+        ],
+      ),
+      _widgetbook.WidgetbookComponent(
         name: 'RatingStars',
         useCases: [
           _widgetbook.WidgetbookUseCase(

@@ -18,7 +18,7 @@ class MyBooksPage extends StatelessWidget {
       appBar: AppBar(title: Text(context.l10n.title)),
       body: BlocBuilder<MyBooksCubit, MyBooksState>(
         builder: (context, state) => switch (state) {
-          MyBooksLoading() => const Center(child: CircularProgressIndicator()),
+          MyBooksLoading() => const Center(child: LoadingIndicator()),
           MyBooksFailure() => ErrorView(message: context.l10n.loadFailed),
           MyBooksLoaded(entries: []) => const _EmptyLibrary(),
           MyBooksLoaded() => _Shelf(state: state),

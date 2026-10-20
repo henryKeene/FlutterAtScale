@@ -15,7 +15,7 @@ class TrendingSection extends StatelessWidget {
 
     return BlocBuilder<TrendingCubit, TrendingState>(
       builder: (context, state) => switch (state) {
-        TrendingLoading() => const Center(child: CircularProgressIndicator()),
+        TrendingLoading() => const Center(child: LoadingIndicator()),
         TrendingFailure(:final failure) => ErrorView(
           message: failure.describe(context),
           onRetry: cubit.load,

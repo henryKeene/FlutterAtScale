@@ -27,7 +27,7 @@ class SearchBody extends StatelessWidget {
           ),
           child: const TrendingSection(),
         ),
-        SearchLoading() => const Center(child: CircularProgressIndicator()),
+        SearchLoading() => const Center(child: LoadingIndicator()),
         SearchEmpty(:final query) => EmptyState(
           icon: Icons.search_off,
           title: l10n.noMatchesTitle,

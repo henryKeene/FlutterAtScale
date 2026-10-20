@@ -31,9 +31,7 @@ class BookOverviewPage extends StatelessWidget {
           ],
         ),
         body: switch (state) {
-          BookDetailsLoading() => const Center(
-            child: CircularProgressIndicator(),
-          ),
+          BookDetailsLoading() => const Center(child: LoadingIndicator()),
           BookDetailsFailure(:final workId, :final failure) => ErrorView(
             message: failure.describe(context),
             onRetry: () => cubit.load(workId),

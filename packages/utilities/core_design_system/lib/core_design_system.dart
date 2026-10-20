@@ -3,6 +3,7 @@ export 'src/components/book_list_tile.dart';
 export 'src/components/empty_state.dart';
 export 'src/components/error_view.dart';
 export 'src/components/gap.dart';
+export 'src/components/loading_indicator.dart';
 export 'src/components/rating_stars.dart';
 export 'src/components/section_header.dart';
 export 'src/components/tag.dart';

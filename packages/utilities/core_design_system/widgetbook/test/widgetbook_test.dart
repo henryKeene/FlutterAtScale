@@ -5,8 +5,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 
-/// Opens every use case in every mode, the way a reviewer clicking through
-/// Widgetbook would, and fails if any of them throws.
+/// Opens every use case in every mode, the way Widgetbook Cloud does to
+/// snapshot it, and fails if any of them throws or keeps moving: a use case
+/// still animating is caught at a different frame in every snapshot.
 void main() {
   final useCases = WidgetbookRoot(children: directories).leaves;
 
@@ -30,6 +31,7 @@ void main() {
           queryParameters: {
             'path': useCase.path,
             'theme': '{name:${mode[0].toUpperCase()}${mode.substring(1)}}',
+            'preview': '',
           },
         );
         await tester.pumpWidget(

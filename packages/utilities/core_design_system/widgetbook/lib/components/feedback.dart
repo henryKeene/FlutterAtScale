@@ -41,6 +41,18 @@ Widget errorView(BuildContext context) {
   );
 }
 
+/// It spins here, and holds still in Widgetbook Cloud's snapshots. Pause it
+/// to see what a review shows.
+@widgetbook.UseCase(
+  name: 'Default',
+  type: LoadingIndicator,
+  path: '[Components]',
+)
+Widget loadingIndicator(BuildContext context) => TickerMode(
+  enabled: !context.knobs.boolean(label: 'Paused'),
+  child: const Center(child: LoadingIndicator()),
+);
+
 @widgetbook.UseCase(name: 'Tones', type: Tag, path: '[Components]')
 Widget tags(BuildContext context) {
   final label = context.knobs.string(label: 'Label', initialValue: 'Remote');

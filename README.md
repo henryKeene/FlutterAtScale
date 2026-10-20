@@ -245,6 +245,11 @@ The catalogue is also on [Widgetbook Cloud](https://www.widgetbook.io/cloud), as
 
 Widgetbook Cloud reviews the use cases build_runner describes in the uploading package's `.dart_tool`. Each package's Widgetbook lists `widgetbook_generator` as a normal dependency rather than a dev one, so building the catalogue describes every Widgetbook's use cases, not just its own.
 
+A review compares a snapshot of each use case as it opens, which has two consequences:
+
+- Anything still moving is caught at a different frame in every build, so a loading spinner would show up as a change in every review. Widgetbook Cloud opens use cases in preview mode to snapshot them, and `BookshelfWidgetbook` pauses animations there. `LoadingIndicator` then holds still as a part-drawn ring, rather than the dot a paused spinner shrinks to. The catalogue's tests open every use case the same way, and fail if any of them is still moving.
+- A change that only shows after a tap, such as a snack bar, is in no snapshot, so the review does not show it. Try it in the pull request's GitHub Pages preview instead.
+
 To upload a build by hand, run this from `packages/app/widgetbook`, with the pinned Flutter on your `PATH`:
 
 ```sh

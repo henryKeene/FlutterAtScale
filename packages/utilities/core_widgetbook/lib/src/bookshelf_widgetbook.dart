@@ -11,6 +11,8 @@ import 'package:widgetbook/widgetbook.dart';
 /// - a theme for every mode in `BookshelfColors.modes`
 /// - every locale in [locales]
 /// - device viewports, text scale, alignment and the widget inspector
+/// - animations paused while Widgetbook Cloud takes its snapshots, so a
+///   spinner does not show up as a change in every review
 ///
 /// Widgetbook is built on the SDK's Material library and Bookshelf on
 /// `material_ui`, whose `Theme` and `ThemeData` are different types, so
@@ -62,7 +64,13 @@ class BookshelfWidgetbook extends StatelessWidget {
         scaffoldMessengerKey: navigationLogMessenger,
         localizationsDelegates: localizationsDelegates,
         supportedLocales: locales,
-        home: child,
+        // Widgetbook Cloud opens each use case in preview mode to snapshot
+        // it. A running animation is caught at a different frame in every
+        // build, so its review would flag the use case as changed each time.
+        home: TickerMode(
+          enabled: !WidgetbookState.of(context).previewMode,
+          child: child,
+        ),
       ),
       addons: [
         ViewportAddon(viewports),

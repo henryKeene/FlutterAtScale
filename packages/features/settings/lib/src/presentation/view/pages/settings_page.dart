@@ -17,7 +17,7 @@ class SettingsPage extends StatelessWidget {
       appBar: AppBar(title: Text(context.l10n.title)),
       body: BlocBuilder<SettingsCubit, SettingsState>(
         builder: (context, state) => switch (state) {
-          SettingsLoading() => const Center(child: CircularProgressIndicator()),
+          SettingsLoading() => const Center(child: LoadingIndicator()),
           SettingsLoaded() => _Settings(state: state),
         },
       ),

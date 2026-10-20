@@ -20,9 +20,7 @@ class ReadingStatsPage extends StatelessWidget {
       appBar: AppBar(title: Text(context.l10n.title)),
       body: BlocBuilder<ReadingStatsCubit, ReadingStatsState>(
         builder: (context, state) => switch (state) {
-          ReadingStatsLoading() => const Center(
-            child: CircularProgressIndicator(),
-          ),
+          ReadingStatsLoading() => const Center(child: LoadingIndicator()),
           ReadingStatsLoaded(:final stats) when stats.totalBooks == 0 =>
             EmptyState(
               icon: Icons.insights_outlined,

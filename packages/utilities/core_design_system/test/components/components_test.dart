@@ -104,4 +104,31 @@ void main() {
       );
     });
   });
+
+  group('LoadingIndicator', () {
+    double? valueOf(WidgetTester tester) => tester
+        .widget<CircularProgressIndicator>(
+          find.byType(CircularProgressIndicator),
+        )
+        .value;
+
+    testWidgets('spins while animations run', (tester) async {
+      await tester.pumpWidget(_app(const LoadingIndicator()));
+
+      expect(valueOf(tester), isNull);
+      expect(tester.binding.hasScheduledFrame, isTrue);
+    });
+
+    testWidgets('holds still as a ring while animations are paused', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _app(const TickerMode(enabled: false, child: LoadingIndicator())),
+      );
+      // Settling fails while anything still moves.
+      await tester.pumpAndSettle();
+
+      expect(valueOf(tester), LoadingIndicator.pausedValue);
+    });
+  });
 }

@@ -1,6 +1,7 @@
 import 'package:book_details_widgetbook/widgetbook.directories.g.dart'
     as book_details;
 import 'package:bookshelf_widgetbook/catalogue.dart';
+import 'package:core_design_system/core_design_system.dart';
 import 'package:core_design_system_widgetbook/widgetbook.directories.g.dart'
     as design_system;
 import 'package:core_di/core_di.dart';
@@ -9,24 +10,31 @@ import 'package:material_ui/material_ui.dart';
 import 'package:my_books_widgetbook/widgetbook.directories.g.dart' as my_books;
 import 'package:widgetbook/widgetbook.dart';
 
-/// Opens [path]. A use case that animates forever, such as a loading
-/// spinner, never settles, so pass `settle: false` for it.
+/// Opens [path], or its [preview], the way Widgetbook Cloud opens it to take
+/// a snapshot, and gives the fakes [wait] to answer: the slow catalogue
+/// takes three seconds. A use case that animates forever, such as a loading
+/// spinner, never settles outside a preview, so pass `settle: false` for it.
 Future<void> open(
   WidgetTester tester,
   String path, {
   bool settle = true,
+  bool preview = false,
+  Duration wait = const Duration(seconds: 4),
 }) async {
   tester.view
     ..physicalSize = const Size(1600, 1200)
     ..devicePixelRatio = 1;
   addTearDown(tester.view.reset);
 
-  final route = Uri(path: '/', queryParameters: {'path': path}).toString();
+  final route = Uri(
+    path: '/',
+    queryParameters: {'path': path, if (preview) 'preview': ''},
+  ).toString();
   // Widgetbook only reads its route when it starts, so each open gets a
   // fresh one.
   await tester.pumpWidget(Catalogue(key: ValueKey(route), initialRoute: route));
   await tester.pump();
-  await tester.pump(const Duration(seconds: 4));
+  await tester.pump(wait);
   if (settle) await tester.pumpAndSettle();
 }
 
@@ -109,5 +117,60 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Change shelf'), findsOneWidget);
+  });
+
+  // The catalogue is what Widgetbook Cloud snapshots, moments after each use
+  // case opens. Anything still moving then is caught at a different frame in
+  // every build, and the review flags it as changed when nothing did.
+  group('holds still for Widgetbook Cloud', () {
+    final useCases = WidgetbookRoot(
+      children: [
+        ...design_system.directories,
+        ...book_details.directories,
+        ...my_books.directories,
+      ],
+    ).leaves;
+
+    for (final useCase in useCases) {
+      testWidgets(useCase.path, (tester) async {
+        await open(
+          tester,
+          useCase.path,
+          preview: true,
+          wait: const Duration(milliseconds: 500),
+          settle: false,
+        );
+        // Draw what the fakes answered while it waited.
+        await tester.pump();
+
+        expect(tester.takeException(), isNull);
+        expect(
+          tester.binding.hasScheduledFrame,
+          isFalse,
+          reason: 'something on it is still moving',
+        );
+
+        // Let the slow fakes answer, so no timer outlives the test.
+        await tester.pump(const Duration(seconds: 4));
+      });
+    }
+
+    testWidgets('and shows a loading screen as a still ring', (tester) async {
+      await open(
+        tester,
+        'my-books/mybooksflow/loading',
+        preview: true,
+        settle: false,
+      );
+
+      expect(
+        tester
+            .widget<CircularProgressIndicator>(
+              find.byType(CircularProgressIndicator),
+            )
+            .value,
+        LoadingIndicator.pausedValue,
+      );
+    });
   });
 }
