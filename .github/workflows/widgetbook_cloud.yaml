@@ -1,0 +1,54 @@
+name: Widgetbook Cloud
+
+# Pushes the design system's Widgetbook to Widgetbook Cloud on every push to a
+# branch. Widgetbook Cloud compares a pull request's build with its base
+# branch's and posts the review on the pull request.
+#
+# It runs on push rather than on pull_request because a pull request is
+# checked out as a detached merge commit, and Widgetbook Cloud needs the
+# branch name. It needs the WIDGETBOOK_API_KEY secret, and skips the build and
+# upload without it, such as on a fork.
+on:
+  push:
+    branches: ["**"]
+
+concurrency:
+  group: widgetbook-cloud-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  push:
+    name: Push the design system's Widgetbook
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      WIDGETBOOK_API_KEY: ${{ secrets.WIDGETBOOK_API_KEY }}
+    defaults:
+      run:
+        working-directory: packages/utilities/core_design_system/widgetbook
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup_flutter
+
+      - name: Bootstrap the workspace
+        if: env.WIDGETBOOK_API_KEY != ''
+        working-directory: .
+        run: |
+          fvm dart run melos bootstrap
+          # The Widgetbook CLI runs `flutter --version` itself.
+          echo "$GITHUB_WORKSPACE/.fvm/flutter_sdk/bin" >> "$GITHUB_PATH"
+
+      - name: Build
+        if: env.WIDGETBOOK_API_KEY != ''
+        run: |
+          dart run build_runner build
+          flutter build web
+
+      - name: Push to Widgetbook Cloud
+        if: env.WIDGETBOOK_API_KEY != ''
+        run: |
+          dart pub global activate widgetbook_cli 3.15.0
+          dart pub global run widgetbook_cli:widgetbook cloud build push \
+            --api-key "$WIDGETBOOK_API_KEY" \
+            --branch "$GITHUB_REF_NAME"
