@@ -120,6 +120,18 @@ void main() {
       expect(Fakes.library.entries, isEmpty);
     });
 
+    testWidgets('undoes a save from the snack bar', (tester) async {
+      await open(tester, 'full-details');
+      await tapText(tester, 'Add to shelf');
+      await tapText(tester, 'Want to read');
+      expect(Fakes.library.entries, hasLength(1));
+
+      await tapText(tester, 'Undo');
+
+      expect(Fakes.library.entries, isEmpty);
+      expect(find.text('Add to shelf'), findsOneWidget);
+    });
+
     testWidgets('shows how the feature hands control back', (tester) async {
       await open(tester, 'full-details');
 

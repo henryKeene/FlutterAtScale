@@ -56,4 +56,7 @@ class BookDetailsLocalizationsEn extends BookDetailsLocalizations {
 
   @override
   String get saveReview => 'Save review';
+
+  @override
+  String get undo => 'Undo';
 }

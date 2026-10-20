@@ -22,9 +22,12 @@ void main() {
   late _MockLibraryService library;
   late _MockFeatureFlagService flags;
 
+  setUpAll(() => registerFallbackValue(ReadingStatus.reading));
+
   setUp(() {
     library = _MockLibraryService();
     flags = _MockFeatureFlagService();
+    when(() => library.entryFor(any())).thenAnswer((_) async => null);
   });
 
   ShelveBookCubit buildCubit() => ShelveBookCubit(library, flags);
@@ -81,6 +84,104 @@ void main() {
         const ShelveBookSaving(),
         const ShelveBookFailed(LibraryFailure()),
       ],
+    );
+  });
+
+  group('undo', () {
+    final reading = ShelfEntry(
+      book: dune,
+      status: ReadingStatus.reading,
+      updatedAt: DateTime(2025),
+      rating: 3,
+      review: 'Slow going so far.',
+    );
+
+    blocTest<ShelveBookCubit, ShelveBookState>(
+      'puts the book back on its old shelf, with its rating and review',
+      setUp: () {
+        when(() => library.entryFor(dune.workId))
+            .thenAnswer((_) async => reading);
+        when(
+          () => library.shelve(
+            dune,
+            status: any(named: 'status'),
+            rating: any(named: 'rating'),
+            review: any(named: 'review'),
+          ),
+        ).thenAnswer((_) async => success(entry));
+      },
+      build: buildCubit,
+      act: (cubit) async {
+        await cubit.shelve(dune, ReadingStatus.read, rating: 5);
+        await cubit.undo();
+      },
+      skip: 2,
+      expect: () => [const ShelveBookSaving(), const ShelveBookUndone()],
+      verify: (_) => verify(
+        () => library.shelve(
+          dune,
+          status: ReadingStatus.reading,
+          rating: 3,
+          review: 'Slow going so far.',
+        ),
+      ).called(1),
+    );
+
+    blocTest<ShelveBookCubit, ShelveBookState>(
+      'takes the book off the shelf when it was not on one',
+      setUp: () {
+        when(
+          () => library.shelve(
+            dune,
+            status: any(named: 'status'),
+            rating: any(named: 'rating'),
+            review: any(named: 'review'),
+          ),
+        ).thenAnswer((_) async => success(entry));
+        when(() => library.remove(dune.workId))
+            .thenAnswer((_) async => success(null));
+      },
+      build: buildCubit,
+      act: (cubit) async {
+        await cubit.shelve(dune, ReadingStatus.read);
+        await cubit.undo();
+      },
+      skip: 2,
+      expect: () => [const ShelveBookSaving(), const ShelveBookUndone()],
+      verify: (_) => verify(() => library.remove(dune.workId)).called(1),
+    );
+
+    blocTest<ShelveBookCubit, ShelveBookState>(
+      'reports a failed undo',
+      setUp: () {
+        when(
+          () => library.shelve(
+            dune,
+            status: any(named: 'status'),
+            rating: any(named: 'rating'),
+            review: any(named: 'review'),
+          ),
+        ).thenAnswer((_) async => success(entry));
+        when(() => library.remove(dune.workId))
+            .thenAnswer((_) async => failure(const LibraryFailure()));
+      },
+      build: buildCubit,
+      act: (cubit) async {
+        await cubit.shelve(dune, ReadingStatus.read);
+        await cubit.undo();
+      },
+      skip: 2,
+      expect: () => [
+        const ShelveBookSaving(),
+        const ShelveBookFailed(LibraryFailure()),
+      ],
+    );
+
+    blocTest<ShelveBookCubit, ShelveBookState>(
+      'does nothing when there is no save to undo',
+      build: buildCubit,
+      act: (cubit) => cubit.undo(),
+      expect: () => <ShelveBookState>[],
     );
   });
 }

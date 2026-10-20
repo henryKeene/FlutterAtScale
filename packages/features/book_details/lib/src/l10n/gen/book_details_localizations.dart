@@ -184,6 +184,12 @@ abstract class BookDetailsLocalizations {
   /// In en, this message translates to:
   /// **'Save review'**
   String get saveReview;
+
+  /// Snack bar action that puts the book back on the shelf it was on before it was moved.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get undo;
 }
 
 class _BookDetailsLocalizationsDelegate
