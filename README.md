@@ -234,7 +234,7 @@ Two things are worth knowing:
 
 ### Hosting
 
-CI builds every Widgetbook for the web and keeps each build as an artifact.
+Every Widgetbook is on GitHub Pages, so anyone can use them without Flutter: [henrykeene.github.io/FlutterAtScale](https://henrykeene.github.io/FlutterAtScale/). `.github/workflows/widgetbook_pages.yaml` publishes `main`'s at the root of the site. It also publishes each pull request's at `pr-preview/pr-<number>/` and comments the link on the pull request, so a reviewer can try a changed flow before it merges. The preview is removed when the pull request closes. A link can open a use case with its knobs already set, such as `book-details/#/?path=book-details/bookdetailsflow/full-details&knobs={Review%20step:false}`.
 
 The design system's Widgetbook is also on [Widgetbook Cloud](https://www.widgetbook.io/cloud). `.github/workflows/widgetbook_cloud.yaml` uploads a build on every push to a branch. When a pull request is open, Widgetbook Cloud compares its build with the base branch's and posts a review on the pull request, showing which use cases changed. The workflow needs the project's API key as the `WIDGETBOOK_API_KEY` repository secret, and skips the upload without it.
 
@@ -309,7 +309,7 @@ The feature and core hooks add the new package to the workspace, resolve depende
 
 ### CI
 
-`.github/workflows/ci.yaml` installs FVM and the pinned Flutter through `.github/actions/setup_flutter`, checks the committed DI config, localizations and Widgetbook trees are up to date, runs `melos run check`, builds a development APK and builds every Widgetbook for the web. `.github/workflows/widgetbook_cloud.yaml` uploads the design system's Widgetbook to Widgetbook Cloud, as described under [Hosting](#hosting).
+`.github/workflows/ci.yaml` installs FVM and the pinned Flutter through `.github/actions/setup_flutter`, checks the committed DI config, localizations and Widgetbook trees are up to date, runs `melos run check`, and builds a development APK. Two more workflows host the Widgetbooks, as described under [Hosting](#hosting): `widgetbook_pages.yaml` publishes them to GitHub Pages, and `widgetbook_cloud.yaml` uploads the design system's to Widgetbook Cloud.
 
 ### Editors
 
@@ -325,7 +325,7 @@ This is a demo, so a few things are deliberately light:
 - Spanish is the only second language, and the translations haven't been through a translator.
 - The design tokens are written by hand. [docs/design_tokens.md](docs/design_tokens.md) describes generating them from Figma.
 - The typography tokens name Roboto without bundling it. Android has it, and other platforms fall back to their system font. A real app would ship its brand font in `core_design_system`.
-- Only the design system's Widgetbook is on Widgetbook Cloud, and only three packages have a Widgetbook so far.
+- Only the design system's Widgetbook is on Widgetbook Cloud, which takes one project per Widgetbook, and only three packages have a Widgetbook so far.
 
 ## Licence
 

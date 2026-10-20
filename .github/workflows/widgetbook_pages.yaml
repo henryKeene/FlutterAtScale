@@ -1,0 +1,74 @@
+name: Widgetbook on GitHub Pages
+
+# Publishes every Widgetbook to GitHub Pages, where anyone can use them:
+# main's at the root of the site, and each pull request's at
+# pr-preview/pr-<number>/, with a comment on the pull request linking to it.
+# A pull request's preview is removed when it closes.
+#
+# Needs Settings > Pages to deploy from the gh-pages branch, and
+# Settings > Actions > General to give workflows read and write permissions.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: widgetbook-pages-${{ github.ref }}
+
+jobs:
+  publish:
+    name: Publish the Widgetbooks
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      # Where the site goes, below the repository's Pages URL.
+      SITE_PATH: ${{ github.event_name == 'pull_request' && format('pr-preview/pr-{0}/', github.event.number) || '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup_flutter
+        if: github.event.action != 'closed'
+
+      - name: Bootstrap the workspace
+        if: github.event.action != 'closed'
+        run: |
+          fvm flutter pub get
+          fvm dart run melos bootstrap
+
+      - name: Build every Widgetbook
+        if: github.event.action != 'closed'
+        run: |
+          base="/${{ github.event.repository.name }}/${SITE_PATH}"
+          mkdir -p site
+          for app in \
+            design-system:packages/utilities/core_design_system/widgetbook \
+            book-details:packages/features/book_details/widgetbook \
+            my-books:packages/features/my_books/widgetbook
+          do
+            name="${app%%:*}"
+            dir="${app#*:}"
+            (cd "$dir" && fvm flutter build web --base-href "$base$name/")
+            cp -R "$dir/build/web" "site/$name"
+          done
+          cp .github/pages/index.html site/
+          touch site/.nojekyll
+
+      - name: Publish the pull request's preview
+        if: github.event_name == 'pull_request'
+        uses: rossjrw/pr-preview-action@v1.8.1
+        with:
+          source-dir: site
+          qr-code: false
+
+      - name: Publish main
+        if: github.event_name == 'push'
+        uses: JamesIves/github-pages-deploy-action@v4.9.0
+        with:
+          folder: site
+          branch: gh-pages
+          clean-exclude: pr-preview/
