@@ -13,5 +13,6 @@
   "skip": "Omitir",
   "reviewPrompt": "¿Qué te ha parecido {title}?",
   "reviewHint": "¿Qué opinas?",
-  "saveReview": "Guardar reseña"
+  "saveReview": "Guardar reseña",
+  "undo": "Deshacer"
 }

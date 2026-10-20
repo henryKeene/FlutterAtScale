@@ -70,5 +70,9 @@
   "saveReview": "Save review",
   "@saveReview": {
     "description": "Button that saves the rating and review."
+  },
+  "undo": "Undo",
+  "@undo": {
+    "description": "Snack bar action that puts the book back on the shelf it was on before it was moved."
   }
 }

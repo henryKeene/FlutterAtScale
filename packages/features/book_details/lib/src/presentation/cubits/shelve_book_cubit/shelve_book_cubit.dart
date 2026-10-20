@@ -23,12 +23,36 @@ class ShelveBookCubit extends Cubit<ShelveBookState> {
     String? review,
   }) async {
     emit(const ShelveBookSaving());
+    final previous = await _library.entryFor(book.workId);
     final result = await _library.shelve(
       book,
       status: status,
       rating: rating,
       review: review,
     );
-    emit(result.fold(ShelveBookSaved.new, ShelveBookFailed.new));
+    emit(
+      result.fold(
+        (entry) => ShelveBookSaved(entry, previous: previous),
+        ShelveBookFailed.new,
+      ),
+    );
+  }
+
+  /// Puts the shelf back the way it was before the last save: the book goes
+  /// back to its old shelf, with its old rating and review, or off the shelf
+  /// if it was not on one.
+  Future<void> undo() async {
+    if (state case ShelveBookSaved(:final entry, :final previous)) {
+      emit(const ShelveBookSaving());
+      final result = previous == null
+          ? await _library.remove(entry.book.workId)
+          : (await _library.shelve(
+              previous.book,
+              status: previous.status,
+              rating: previous.rating,
+              review: previous.review,
+            )).map((_) {});
+      emit(result.fold((_) => const ShelveBookUndone(), ShelveBookFailed.new));
+    }
   }
 }

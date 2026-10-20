@@ -49,13 +49,20 @@ class _BookDetailsFlowState extends State<BookDetailsFlow> {
         messenger.showSnackBar(
           SnackBar(
             content: Text(context.l10n.movedTo(entry.status.label(context))),
+            action: SnackBarAction(
+              label: context.l10n.undo,
+              onPressed: context.read<ShelveBookCubit>().undo,
+            ),
+            // Undo is a shortcut, not the only way back: the shelf button
+            // changes the shelf at any time, so the snack bar can time out.
+            persist: false,
           ),
         );
       case ShelveBookFailed(:final failure):
         messenger.showSnackBar(
           SnackBar(content: Text(failure.describe(context))),
         );
-      case ShelveBookIdle() || ShelveBookSaving():
+      case ShelveBookIdle() || ShelveBookSaving() || ShelveBookUndone():
         break;
     }
   }
