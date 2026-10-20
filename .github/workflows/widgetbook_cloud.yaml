@@ -35,6 +35,7 @@ jobs:
         if: env.WIDGETBOOK_API_KEY != ''
         working-directory: .
         run: |
+          fvm flutter pub get
           fvm dart run melos bootstrap
           # The Widgetbook CLI runs `flutter --version` itself.
           echo "$GITHUB_WORKSPACE/.fvm/flutter_sdk/bin" >> "$GITHUB_PATH"

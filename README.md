@@ -10,12 +10,13 @@ Everything runs through [FVM](https://fvm.app). The Flutter version is pinned in
 
 ```sh
 fvm install
+fvm flutter pub get
 fvm dart run melos bootstrap
 fvm dart run melos run gen --no-select
 fvm dart run melos run run:dev
 ```
 
-Melos reads `sdkPath: .fvm/flutter_sdk` from the root `pubspec.yaml`, so every script it runs uses the pinned SDK.
+Melos reads `sdkPath: .fvm/flutter_sdk` from the root `pubspec.yaml`, so every script it runs uses the pinned SDK. Run `pub get` once before melos in a fresh clone: `dart run` cannot resolve a new pub workspace by itself.
 
 ## Architecture
 

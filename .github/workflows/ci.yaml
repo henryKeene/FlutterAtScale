@@ -20,7 +20,11 @@ jobs:
       - uses: ./.github/actions/setup_flutter
 
       - name: Bootstrap the workspace
-        run: fvm dart run melos bootstrap
+        # `dart run` cannot resolve a fresh pub workspace by itself, so the
+        # packages have to be fetched before melos can run.
+        run: |
+          fvm flutter pub get
+          fvm dart run melos bootstrap
 
       - name: Generated code is up to date
         run: |
@@ -48,7 +52,11 @@ jobs:
       - uses: ./.github/actions/setup_flutter
 
       - name: Bootstrap the workspace
-        run: fvm dart run melos bootstrap
+        # `dart run` cannot resolve a fresh pub workspace by itself, so the
+        # packages have to be fetched before melos can run.
+        run: |
+          fvm flutter pub get
+          fvm dart run melos bootstrap
 
       - name: Build
         working-directory: packages/app/bookshelf
@@ -77,7 +85,11 @@ jobs:
       - uses: ./.github/actions/setup_flutter
 
       - name: Bootstrap the workspace
-        run: fvm dart run melos bootstrap
+        # `dart run` cannot resolve a fresh pub workspace by itself, so the
+        # packages have to be fetched before melos can run.
+        run: |
+          fvm flutter pub get
+          fvm dart run melos bootstrap
 
       - name: Build
         working-directory: ${{ matrix.path }}
