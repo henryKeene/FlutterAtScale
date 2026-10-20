@@ -1,11 +1,11 @@
 {
-    "name": "Bookshelf design system",
-    "short_name": "Design system",
+    "name": "Bookshelf Widgetbook",
+    "short_name": "Widgetbook",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "The Bookshelf design system in Widgetbook.",
+    "description": "Every Bookshelf Widgetbook in one app.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
